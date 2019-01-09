@@ -1,0 +1,26 @@
+.Input{
+    background-color: #fff;
+    width: 80%;
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+    border: 2px solid #ddd;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.Input:focus{
+    background-color: #eee;
+}
+
+.Invalid{
+    background-color: #f75757;
+    border: 1px solid #f75757;
+}
+
+.ErrorMessage{
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    color: red;
+}

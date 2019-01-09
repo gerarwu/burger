@@ -1,0 +1,27 @@
+.Order{   
+    width: 80%; 
+    border: 1px solid #d0cdcd;
+    box-shadow: 1px 2px #d0cdcd;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    padding: 0 5px;
+    position: relative;
+}
+
+.Order span{
+    display: inline-block;
+    border: 1px solid #ddd;
+    margin-left: 5px;
+    padding: 0 5px;
+    background-color: #eee;
+    text-transform: capitalize;
+}
+
+.Date{
+    color:#000;
+    position: absolute;
+    top: 5px;
+    right: 5px;    
+    font-size: 10px;
+    color: #777;
+}
