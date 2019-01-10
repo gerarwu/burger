@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom'
+import { connect } from 'react-redux';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from '../../components/Order/CheckoutSummary/ContactData/ContactData';
@@ -36,16 +37,24 @@ class Checkout extends Component{
         return (
             <div>
                 <CheckoutSummary 
-                    ingredients={this.state.ingredients}    
+                    ingredients={this.props.ingr}    
                     checkoutContinue={ this.checkoutContinueHandler }
                     checkoutCancel={ this.checkoutCancelHandler }
                 />
                 <Route 
-                    path={this.props.match.path + '/contact-data'}                     
-                    render={ ()=> ( <ContactData ingredients={this.state.ingredients} totalPrice={this.state.totalPrice} {...this.props} /> ) }/>
+                    path={this.props.match.path + '/contact-data'}    
+                    component = { ContactData }                 
+                    //render={ ()=> ( <ContactData ingredients={this.state.ingredients} totalPrice={this.state.totalPrice} {...this.props} /> ) }
+                />
             </div>
         );
     }
 }
 
-export default Checkout;
+const mapStateToProps = (state)=>{
+    return {
+        ingr: state.ingredients
+    }
+}
+
+export default connect(mapStateToProps)(Checkout);

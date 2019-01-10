@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import Button from '../../../UI/Button/Button';
 import classes from './ContactData.css';
@@ -98,8 +99,8 @@ class Contactdata extends Component{
         }
 
         const order = {
-            price: this.props.totalPrice,
-            ingredients: this.props.ingredients,    
+            price: this.props.price,
+            ingredients: this.props.ingr,    
             date: new Date(),
             orderData: orderForm        
         }
@@ -153,4 +154,11 @@ class Contactdata extends Component{
     }
 }
 
-export default Contactdata;
+const mapStateToProps = (state)=>{
+    return{
+        ingr: state.ingredients,
+        price: state.totalPrice
+    }
+}
+
+export default connect(mapStateToProps)(Contactdata);
