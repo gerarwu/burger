@@ -2,6 +2,8 @@ import React from 'react';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import classes from './Auth.css';
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/index';
 
 class Auth extends React.Component {
 
@@ -35,10 +37,55 @@ class Auth extends React.Component {
                 valid: false,
                 touched: false
             }
-        }
+        },
+        signin: true
     }
 
-    render() {
+    checkValidity(value, rules){
+        let isValid = false;
+        
+        if(!rules){
+            return true;
+        }
+
+        if(rules.required){
+            isValid = value.trim() !== '';
+        }
+
+        if(rules.minLength){
+            isValid = value.trim().length >= rules.minLength && isValid;                    
+        }
+
+        if(rules.maxLength){
+            isValid = value.trim().length <= rules.maxLength && isValid;            
+        }
+
+        return isValid;
+    }
+
+    inputChangeHandler = (event, controlName) =>{
+        const updatedControls = {
+            ...this.state.auth,
+            [controlName]: {
+                ...this.state.auth[controlName],
+                value: event.target.value,
+                valid: this.checkValidity(event.target.value, this.state.auth[controlName].validation),
+                touched: true
+            }
+        }
+        this.setState({auth: updatedControls});
+    }
+
+    autenticate = (event) => {
+        event.preventDefault();
+        this.props.onAuthenticate(this.state.auth.email.value, this.state.auth.password.value, this.state.signin);        
+    }
+
+    switchTypeSignHandler = ()=> {
+        this.setState({signin: !this.state.signin});
+    }
+
+    render() {       
 
         let formElements = [];
         for (let input in this.state.auth) {
@@ -50,7 +97,7 @@ class Auth extends React.Component {
 
         return (
             <div className={classes.Auth}>
-                <form>
+                <form onSubmit={this.autenticate} >
 
                     {formElements.map(formElement => (
                         <Input
@@ -65,11 +112,18 @@ class Auth extends React.Component {
                         />
                     ))}
 
-                    <Button btnStyle='Success'>Log In</Button>
+                    <Button btnStyle='Success'>Submit { this.state.signin ? 'Sign in': 'Sign up' } </Button>
                 </form>
+                <Button btnStyle='Danger' clicked={ this.switchTypeSignHandler }>{ this.state.signin ? 'Sign up': 'Sign in'} </Button>
             </div>
         );
     }
 }
 
-export default Auth;
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuthenticate: ( email, password, isSignin )=> dispatch(actions.authenticate(email, password, isSignin))
+    }
+};
+
+export default connect(null, mapDispatchToProps)(Auth);

@@ -13,3 +13,6 @@ export {
     fetchOrderFail
 } from './order';
 
+export {
+    authenticate
+} from './auth';
