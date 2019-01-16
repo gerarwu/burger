@@ -14,7 +14,7 @@ const burger = (props) => {
         }, []);
 
     if(transformedIngredients.length === 0){
-        transformedIngredients = <p> Introduce a item </p>
+        transformedIngredients = <p> Introduce an item </p>
     }
 
     return (
