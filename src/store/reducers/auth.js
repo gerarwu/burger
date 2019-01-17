@@ -14,10 +14,13 @@ const reducer = (state = initialState, action) =>{
             return updateObject(state, {error: null, loading: true});
             
         case actionTypes.AUTH_SUCCESS:
-            return updateObject(state, { token: action.idToken, userId: action.userId, error: null, loading: false });
+            return updateObject(state, { token: action.token, userId: action.userId, error: null, loading: false });
 
         case actionTypes.AUTH_FAIL:
             return updateObject(state, {error: action.error, loading: false});
+
+        case actionTypes.AUTH_LOGOUT:
+            return updateObject( state, {error: null, token:null, userId: null, loading: false} );
         
         default: 
             return state;
