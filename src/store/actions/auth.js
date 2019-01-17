@@ -36,13 +36,11 @@ export const authenticate = (email, password, isSignin) => {
             url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key='+token
         }
         axios.post(url, authData)
-        .then((response)=>{
-            console.log(response);
+        .then((response)=>{            
             dispatch( authSuccess(response.data.idToken, response.data.localId) );
         })
         .catch((error)=>{
-            console.log(error);
-            dispatch( authFail(error) );
+            dispatch( authFail(error.response.data.error) );
         });        
     }
 }

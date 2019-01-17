@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
+import Spinner from '../../components/UI/Spinner/Spinner';
 import classes from './Auth.css';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
@@ -95,22 +96,33 @@ class Auth extends React.Component {
             })
         }
 
+        let inputs = formElements.map(formElement => (
+            <Input
+                elementtype={formElement.elementType}
+                name={formElement.id}
+                key={formElement.id}
+                {...formElement.elementConfig}
+                invalid={!formElement.valid}
+                shouldValidate={formElement.validation}
+                touched={formElement.touched}
+                changed={(event) => this.inputChangeHandler(event, formElement.id)}
+            />
+        ));
+
+        if(this.props.loading){
+            inputs = <Spinner />;
+        }
+
+        let error = this.props.error ? this.props.error.message : null ;        
+
         return (
             <div className={classes.Auth}>
+
+                <p>{ error }</p>
+
                 <form onSubmit={this.autenticate} >
 
-                    {formElements.map(formElement => (
-                        <Input
-                            elementtype={formElement.elementType}
-                            name={formElement.id}
-                            key={formElement.id}
-                            {...formElement.elementConfig}
-                            invalid={!formElement.valid}
-                            shouldValidate={formElement.validation}
-                            touched={formElement.touched}
-                            changed={(event) => this.inputChangeHandler(event, formElement.id)}
-                        />
-                    ))}
+                    { inputs }
 
                     <Button btnStyle='Success'>Submit { this.state.signin ? 'Sign in': 'Sign up' } </Button>
                 </form>
@@ -120,10 +132,17 @@ class Auth extends React.Component {
     }
 }
 
+const mapStateToProps = state => {
+    return{
+        loading: state.auth.loading,
+        error: state.auth.error
+    }
+};
+
 const mapDispatchToProps = dispatch => {
     return {
         onAuthenticate: ( email, password, isSignin )=> dispatch(actions.authenticate(email, password, isSignin))
     }
 };
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
