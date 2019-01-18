@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import Spinner from '../../components/UI/Spinner/Spinner';
@@ -113,10 +114,14 @@ class Auth extends React.Component {
             inputs = <Spinner />;
         }
 
-        let error = this.props.error ? this.props.error.message : null ;        
+        let error = this.props.error ? this.props.error.message : null;
 
-        return (
+        let redirect = this.props.isAuthenticated ? <Redirect to='/' /> : null;
+
+        return (            
             <div className={classes.Auth}>
+                
+                { redirect }
 
                 <p>{ error }</p>
 
@@ -135,7 +140,8 @@ class Auth extends React.Component {
 const mapStateToProps = state => {
     return{
         loading: state.auth.loading,
-        error: state.auth.error
+        error: state.auth.error,
+        isAuthenticated: state.auth.token !== null
     }
 };
 

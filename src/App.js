@@ -1,25 +1,27 @@
-import React, { Component } from 'react';
-
+import React, {Component} from 'react';
 import Layout from './hoc/Layout/Layout'
-import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
-import Checkout from './containers/Checkout/Checkout';
-import Orders from './containers/Orders/Orders';
-import Auth from './containers/Auth/Auth';
-import Logout from './containers/Auth/Logout/Logout';
 import { Route, Switch } from 'react-router-dom';
 
+const asyncCheckout = React.lazy(()=> import('./containers/Checkout/Checkout'))
+const asyncBurgerBuilder = React.lazy(()=> import('./containers/BurgerBuilder/BurgerBuilder'));
+const asyncAuth = React.lazy(()=> import('./containers/Auth/Auth'));
+const asyncOrders = React.lazy(()=> import('./containers/Orders/Orders'));
+const asyncLogout = React.lazy(()=> import('./containers/Auth/Logout/Logout'));
+
 class App extends Component {
-  render() {
+  render() {    
     return (
       <div>
-        <Layout>
-          <Switch>
-            <Route path='/checkout' component={Checkout} />
-            <Route path='/orders' component={Orders} />
-            <Route path='/auth' component={Auth} />
-            <Route path='/logout' component={Logout} />
-            <Route path='/' exac    component={BurgerBuilder} />
-          </Switch>
+        <Layout>    
+          <React.Suspense fallback={"loading"}>      
+            <Switch>            
+              <Route path='/checkout' component={asyncCheckout} />
+              <Route path='/orders' component={asyncOrders} />
+              <Route path='/auth' component={asyncAuth} />
+              <Route path='/logout' component={asyncLogout} />
+              <Route path='/' exac    component={asyncBurgerBuilder} />            
+            </Switch>          
+          </React.Suspense>
         </Layout>
       </div>
     );
